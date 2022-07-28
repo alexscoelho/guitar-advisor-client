@@ -1,31 +1,74 @@
 <script>
   import { onMount } from 'svelte';
   let guitars = []
+  let price= ""
+  let name= ""
+  let brand= ""
+  let description= ""
+  let manufacturerCountry= ""
+  let imageUrl= ""
 
   onMount(async () => {
     const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/')
     guitars = await res.json()
   })
+
+  async function createGuitar () {
+    let data = {
+      price,
+      name,
+      brand,
+      description,
+      manufacturer_country:manufacturerCountry,
+      image_url:imageUrl
+    }
+    const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    const guitarCreated = res.json()
+    console.log(guitarCreated)
+
+  }
 </script>
+
+<form on:submit|preventDefault={createGuitar}>
+  <label for="name">Name</label><br>
+  <input bind:value={name} /><br>
+
+  <label for="brand">Brand</label><br>
+  <input bind:value={brand} /><br>
+
+  <label for="price">Price</label><br>
+  <input bind:value={price} /><br>
+
+  <label for="manufacturerCountry">Manufacturer Country</label><br>
+  <input bind:value={manufacturerCountry} /><br>
+
+  <label for="imageUrl">Image Url</label><br>
+  <input bind:value={imageUrl} /><br>
+
+  <label for="description">Description</label><br>
+  <textarea bind:value={description} rows="4" cols="50"></textarea><br>
+
+  <button type="submit">Create</button>
+</form>
+
 
 <main>
   <h1>Guitar Advisor</h1>
-  {JSON.stringify(guitars)}
+  <ul>
+    {#each guitars as {name, price, id} }
+    <li>
+      {name} - ${price}
+    </li>
+    {/each}
+  </ul>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+  
 </style>
