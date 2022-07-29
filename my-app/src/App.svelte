@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   let guitars = []
+  let guitar;
   let price= ""
   let name= ""
   let brand= ""
@@ -12,6 +13,11 @@
     const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/')
     guitars = await res.json()
   })
+
+  async function getGuitar (id) {
+    const res = await fetch(`https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/${id}`)
+    guitar = await res.json()
+  }
 
   async function createGuitar () {
     let data = {
@@ -31,6 +37,7 @@
     })
     const guitarCreated = res.json()
     console.log(guitarCreated)
+    guitars = [...guitars, guitarCreated];
 
   }
 </script>
@@ -59,16 +66,28 @@
 
 
 <main>
-  <h1>Guitar Advisor</h1>
-  <ul>
-    {#each guitars as {name, price, id} }
-    <li>
-      {name} - ${price}
-    </li>
-    {/each}
-  </ul>
+  <div>
+    <h1>Guitar Advisor</h1>
+    <ul>
+      {#each guitars as {name, price,id} }
+      <li class="list-item">
+        {name} - ${price}
+        <button on:click={() =>getGuitar(id)}>Details</button>
+      </li>
+      {/each}
+    </ul>
+  </div>
+
+    <div>
+      
+    </div>
 </main>
 
 <style>
-  
+  .list-item {
+    margin-top: 10px;
+  }
+  main {
+    display: flex;
+  }
 </style>
