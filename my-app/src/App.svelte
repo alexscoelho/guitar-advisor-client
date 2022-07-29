@@ -36,10 +36,10 @@
       body: JSON.stringify(data)
     })
     const guitarCreated = res.json()
-    console.log(guitarCreated)
     guitars = [...guitars, guitarCreated];
 
   }
+
 </script>
 
 <form on:submit|preventDefault={createGuitar}>
@@ -78,9 +78,13 @@
     </ul>
   </div>
 
-    <div>
-      
-    </div>
+  <div class="details-container">
+      <h1>Details</h1>
+      {#if guitar !== undefined}
+        <h2>{guitar?.name}</h2>
+        <p>{guitar?.description}</p>
+      {/if}
+  </div>
 </main>
 
 <style>
@@ -89,5 +93,12 @@
   }
   main {
     display: flex;
+  }
+  .details-container {
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+    border: 1px solid white;
+    min-width: 300px;
   }
 </style>
