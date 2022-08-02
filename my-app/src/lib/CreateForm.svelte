@@ -5,7 +5,7 @@
     export let description="";
     export let manufacturerCountry= "";
     export let imageUrl = "";
-    export let guitars = [];
+    export let getGuitars = () => {}
     
     async function createGuitar () {
     let data = {
@@ -25,7 +25,7 @@
     })
     const guitarCreated = await res.json()
     
-    guitars = [...guitars, guitarCreated];
+    getGuitars()
   }
 
     </script>

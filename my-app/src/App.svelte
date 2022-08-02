@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+import { onMount } from 'svelte';
 import CreateForm from './lib/CreateForm.svelte';
 import ReviewForm from './lib/ReviewForm.svelte'
   let guitars = []
@@ -13,9 +13,13 @@ import ReviewForm from './lib/ReviewForm.svelte'
   let reviewBody = ""
   let numStars = ""
 
-  onMount(async () => {
+  async function getGuitars() {
     const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/')
     guitars = await res.json()
+  }
+
+  onMount(async () => {
+    getGuitars()
   })
 
   async function getGuitar (id) {
@@ -23,9 +27,17 @@ import ReviewForm from './lib/ReviewForm.svelte'
     guitar = await res.json()
   }
 
+  async function deleteGuitar (id) {
+    const res = await fetch(`https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/${id}`, {
+      method: "DELETE"
+    })
+    await res.json()
+    getGuitars()
+  }
+
 </script>
 
-<CreateForm name={name} brand={brand} price={price} description={description} manufacturerCountry={manufacturerCountry} imageUrl={imageUrl} guitars={guitars}/>
+<CreateForm getGuitars={getGuitars} name={name} brand={brand} price={price} description={description} manufacturerCountry={manufacturerCountry} imageUrl={imageUrl} />
 
 <main>
   <div>
@@ -35,6 +47,7 @@ import ReviewForm from './lib/ReviewForm.svelte'
       <li class="list-item">
         {name} - ${price}
         <button on:click={() =>getGuitar(id)}>Details</button>
+        <button on:click={() =>deleteGuitar(id)}>Delete</button>
       </li>
       {/each}
     </ul>
