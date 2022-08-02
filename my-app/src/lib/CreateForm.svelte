@@ -1,4 +1,5 @@
 <script>
+  import {guitars} from '../stores.js'
     export let name = ""
     export let brand = ""
     export let price="";
@@ -24,8 +25,9 @@
       body: JSON.stringify(data)
     })
     const guitarCreated = await res.json()
-    
-    getGuitars()
+    let updated = [...$guitars,guitarCreated]
+    guitars.set(updated)
+    // getGuitars()
   }
 
     </script>

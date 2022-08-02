@@ -1,9 +1,8 @@
 <script>
-import { onMount } from 'svelte';
+import {guitar, guitars} from './stores.js'
+import { onMount, onDestroy } from 'svelte';
 import CreateForm from './lib/CreateForm.svelte';
 import ReviewForm from './lib/ReviewForm.svelte'
-  let guitars = []
-  let guitar;
   let price= ""
   let name= ""
   let brand= ""
@@ -13,9 +12,17 @@ import ReviewForm from './lib/ReviewForm.svelte'
   let reviewBody = ""
   let numStars = ""
 
+  // subscribe to value on stores.js and keeps tracks of changes
+  let guitarValue;
+  const unsubscribe = guitar.subscribe(value => {
+    guitarValue = value
+  })
+
+  onDestroy(unsubscribe);
+
   async function getGuitars() {
     const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/')
-    guitars = await res.json()
+    guitars.set(await res.json())
   }
 
   onMount(async () => {
@@ -24,7 +31,8 @@ import ReviewForm from './lib/ReviewForm.svelte'
 
   async function getGuitar (id) {
     const res = await fetch(`https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/${id}`)
-    guitar = await res.json()
+    guitar.set(await res.json())
+
   }
 
   async function deleteGuitar (id) {
@@ -43,7 +51,7 @@ import ReviewForm from './lib/ReviewForm.svelte'
   <div>
     <h1>Guitar Advisor</h1>
     <ul>
-      {#each guitars as {name, price,id} }
+      {#each $guitars as {name, price,id} }
       <li class="list-item">
         {name} - ${price}
         <button on:click={() =>getGuitar(id)}>Details</button>
@@ -55,9 +63,9 @@ import ReviewForm from './lib/ReviewForm.svelte'
 
   <div class="details-container">
       <h1>Details</h1>
-      {#if guitar !== undefined}
-        <h2>{guitar?.name}</h2>
-        <p>{guitar?.description}</p>
+      {#if guitarValue !== undefined}
+        <h2>{guitarValue?.name}</h2>
+        <p>{guitarValue?.description}</p>
       {/if}
       <ReviewForm reviewBody={reviewBody} numStars={numStars} guitar={guitar}/>
   </div>
