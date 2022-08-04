@@ -45,7 +45,7 @@ import ReviewForm from './lib/ReviewForm.svelte'
 
 </script>
 
-<CreateForm getGuitars={getGuitars} name={name} brand={brand} price={price} description={description} manufacturerCountry={manufacturerCountry} imageUrl={imageUrl} />
+<CreateForm  name={name} brand={brand} price={price} description={description} manufacturerCountry={manufacturerCountry} imageUrl={imageUrl} />
 
 <main>
   <div>

@@ -6,8 +6,17 @@
     export let description="";
     export let manufacturerCountry= "";
     export let imageUrl = "";
-    export let getGuitars = () => {}
+    let imageFile;
     
+    const onFileSelected = async(e) => {
+      let data = new FormData()
+      data.append('file', e.target.files[0])
+      const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/files/', {
+      method: 'POST',
+      body: data
+    })
+    } 
+
     async function createGuitar () {
     let data = {
       price,
@@ -27,7 +36,6 @@
     const guitarCreated = await res.json()
     let updated = [...$guitars,guitarCreated]
     guitars.set(updated)
-    // getGuitars()
   }
 
     </script>
@@ -46,8 +54,8 @@
         <label for="manufacturerCountry">Manufacturer Country</label><br>
         <input type="text" bind:value={manufacturerCountry} /><br>
       
-        <label for="imageUrl">Image Url</label><br>
-        <input type="text" bind:value={imageUrl} /><br>
+        <label for="image">Upload Image</label><br>
+        <input on:change={(e)=> onFileSelected(e)} type="file" id="image" name="image" bind:value={imageFile} /><br>
       
         <label for="description">Description</label><br>
         <textarea bind:value={description} rows="4" cols="50"></textarea><br>
