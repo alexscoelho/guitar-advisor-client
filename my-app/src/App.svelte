@@ -51,7 +51,7 @@ import ReviewForm from './lib/ReviewForm.svelte'
   <div>
     <h1>Guitar Advisor</h1>
     <ul>
-      {#each $guitars as {name, price,id} }
+      {#each $guitars as {image_url,name, price,id} }
       <li class="list-item">
         {name} - ${price}
         <button on:click={() =>getGuitar(id)}>Details</button>
@@ -66,6 +66,7 @@ import ReviewForm from './lib/ReviewForm.svelte'
       {#if guitarValue !== undefined}
         <h2>{guitarValue?.name}</h2>
         <p>{guitarValue?.description}</p>
+        <img src={guitarValue?.image_url} alt={guitarValue?.image_url} width="200" height="200" />
       {/if}
       <ReviewForm reviewBody={reviewBody} numStars={numStars} guitar={guitar}/>
   </div>

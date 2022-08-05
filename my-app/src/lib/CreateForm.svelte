@@ -5,17 +5,23 @@
     export let price="";
     export let description="";
     export let manufacturerCountry= "";
-    export let imageUrl = "";
+    export let imageUrl;
     let imageFile;
     
     const onFileSelected = async(e) => {
       let data = new FormData()
       data.append('file', e.target.files[0])
+      uploadImage(data)
+    } 
+
+    async function uploadImage(data) {
       const res = await fetch('https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/files/', {
       method: 'POST',
       body: data
-    })
-    } 
+      })
+      data = await res.json() 
+      imageUrl = data.secure_url
+    }
 
     async function createGuitar () {
     let data = {
