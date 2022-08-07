@@ -1,17 +1,17 @@
 <script>
   import { Router, Link, Route } from "svelte-navigator";
-  import SignUp from "./routes/SignUp.svelte";
   import Home from "./routes/Home.svelte";
+  import SignIn from "./routes/SignIn.svelte";
 </script>
 
-<Router>
+<Router primary={false}>
   <nav>
     <Link to="/signup">Signup</Link>
     <Link to="/home">Home</Link>
   </nav>
   <div>
     <Route path="/signup">
-      <SignUp />
+      <SignIn />
     </Route>
     <Route path="/home">
       <Home />
