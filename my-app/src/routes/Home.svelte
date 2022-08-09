@@ -1,5 +1,5 @@
 <script>
-  import { guitar, guitars } from "../stores";
+  import { guitar, guitars, token } from "../stores";
   import { onMount, onDestroy } from "svelte";
   import CreateForm from "../lib/CreateForm.svelte";
   import ReviewForm from "../lib/ReviewForm.svelte";
@@ -22,7 +22,12 @@
 
   async function getGuitars() {
     const res = await fetch(
-      "https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/"
+      "https://alexscoelho-guitar-advisor-api-5w546w45c6g9-8000.githubpreview.dev/guitars/",
+      {
+        headers: {
+          Authorization: `Bearer ${$token}`,
+        },
+      }
     );
     guitars.set(await res.json());
   }

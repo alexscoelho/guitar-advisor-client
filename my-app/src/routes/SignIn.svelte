@@ -4,6 +4,9 @@
   import { token } from "../stores";
   import { onDestroy } from "svelte";
 
+  import { useNavigate } from "svelte-navigator";
+  const navigate = useNavigate();
+
   // subscribe to value on stores.js and keeps tracks of changes
   let accessToken;
   const unsubscribe = token.subscribe((value) => {
@@ -27,13 +30,13 @@
       if (res.ok) {
         const data = await res.json();
         token.set(data.access_token);
+        localStorage.setItem("accessToken", data.access_token);
+        navigate("/home");
       }
     } catch (error) {
       console.log("Something Bad Happened!");
     }
   }
-
-  $: console.log(accessToken);
 </script>
 
 <form on:submit|preventDefault={signin}>
